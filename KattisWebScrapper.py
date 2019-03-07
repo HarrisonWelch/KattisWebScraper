@@ -2,14 +2,15 @@
 
 import requests
 from bs4 import BeautifulSoup
+import tkinter
 
-if __name__ == "__main__":
+def getScoreboard():
   # https://open.kattis.com/universities/apsu.edu
   res = requests.get('https://open.kattis.com/universities/apsu.edu')
-  print('type(res) = ' + str(type(res)))
+  # print('type(res) = ' + str(type(res)))
   # print(res.text) # don't
   soup = BeautifulSoup(res.text, 'html.parser')
-  print('type(soup) = ' + str(type(soup)))
+  # print('type(soup) = ' + str(type(soup)))
 
   sections = soup.select('section')
 
@@ -22,16 +23,31 @@ if __name__ == "__main__":
 
   tds = user_score_section.select('td')
 
-  print(len(tds))
+  # print(len(tds))
 
   for i in range(0, len(tds), 4):
     user_positions.append(int(tds[i].getText().strip()))
     user_names.append(tds[i+1].getText().strip())
     user_locations.append(tds[i+2].getText().strip())
     user_scores.append(float(tds[i+3].getText().strip()))
+
+  return user_positions, user_names, user_locations, user_scores
+
+########
+# MAIN #
+########
+
+if __name__ == "__main__":
     # print(' i = ' + str(i) + ', tds[i] = ' + str(tds[i]))
 
   # print('user_score_section = \n\n' + str(user_score_section))
+
+  user_positions = []
+  user_names = []
+  user_locations = []
+  user_scores = []
+
+  user_positions, user_names, user_locations, user_scores = getScoreboard()
 
   for i in range(len(user_positions)):
     print(str(i+1) + ' ' + str(user_positions[i]) + ' ' + user_names[i] + ' ' + str(user_scores[i]))
