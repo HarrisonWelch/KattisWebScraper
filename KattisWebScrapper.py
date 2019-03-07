@@ -4,6 +4,28 @@ import requests
 from bs4 import BeautifulSoup
 import tkinter
 import sched, time
+import tkinter as tk
+
+class Application(tk.Frame):
+    def __init__(self, master=None):
+        super().__init__(master)
+        self.master = master
+        self.pack()
+        self.create_widgets()
+
+    def create_widgets(self):
+        self.hi_there = tk.Button(self)
+        self.hi_there["text"] = "Hello World\n(click me)"
+        self.hi_there["command"] = self.say_hi
+        self.hi_there.pack(side="top")
+
+        self.quit = tk.Button(self, text="QUIT", fg="red",
+                              command=self.master.destroy)
+        self.quit.pack(side="bottom")
+
+    def say_hi(self):
+        print("hi there, everyone!")
+
 def getScoreboard():
   # https://open.kattis.com/universities/apsu.edu
   res = requests.get('https://open.kattis.com/universities/apsu.edu')
@@ -61,9 +83,11 @@ if __name__ == "__main__":
 
   s.enter(5, 1, main_loop, (s,))
   s.run()
-  # for i in range(len(hi)):
-    # print('hi['+str(i)+'] getText = ' + str(hi[i].getText()))
 
-  
+  print("after the run")
+
+  root = tk.Tk()
+  app = Application(master=root)
+  app.mainloop()
 
   # NOTE: hi[1] has the table we need
