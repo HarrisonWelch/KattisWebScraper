@@ -3,7 +3,7 @@
 import requests
 from bs4 import BeautifulSoup
 import tkinter
-
+import sched, time
 def getScoreboard():
   # https://open.kattis.com/universities/apsu.edu
   res = requests.get('https://open.kattis.com/universities/apsu.edu')
@@ -41,16 +41,26 @@ if __name__ == "__main__":
     # print(' i = ' + str(i) + ', tds[i] = ' + str(tds[i]))
 
   # print('user_score_section = \n\n' + str(user_score_section))
+  
+  
+  s = sched.scheduler(time.time, time.sleep)
 
-  user_positions = []
-  user_names = []
-  user_locations = []
-  user_scores = []
+  def main_loop(sc): 
+      print("Doing stuff...")
+      # do your stuff
+      user_positions = []
+      user_names = []
+      user_locations = []
+      user_scores = []
 
-  user_positions, user_names, user_locations, user_scores = getScoreboard()
+      user_positions, user_names, user_locations, user_scores = getScoreboard()
 
-  for i in range(len(user_positions)):
-    print(str(i+1) + ' ' + str(user_positions[i]) + ' ' + user_names[i] + ' ' + str(user_scores[i]))
+      for i in range(len(user_positions)):
+        print(str(i+1) + ' ' + str(user_positions[i]) + ' ' + user_names[i] + ' ' + str(user_scores[i]))
+      s.enter(5, 1, main_loop, (sc,))
+
+  s.enter(5, 1, main_loop, (s,))
+  s.run()
   # for i in range(len(hi)):
     # print('hi['+str(i)+'] getText = ' + str(hi[i].getText()))
 
